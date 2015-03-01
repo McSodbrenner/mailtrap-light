@@ -9,5 +9,8 @@ For the SMTP server you just have to configure "localhost" or your IP as SMTP ho
 It is very basic. So it should be very simple to adapt it.
 
 ## Installation
-`php index.php`
+~~~
+php index.php
+~~~
+
 At the console you can watch the exchanged traffic.
