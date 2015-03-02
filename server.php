@@ -16,14 +16,14 @@ class Server {
 		echo stream_socket_get_name($socket, false) . "\n";
 
 		do {
-			$this->connection = stream_socket_accept($socket);
+			$this->connection = @stream_socket_accept($socket, 5); // @ to suppress timeout warning
+			if ($this->connection === false) continue;
 
 			echo "--- ON CONNECTION ---\n";
 			$this->onConnection();
 
 			echo "--- LOOP ---\n";
 			do {
-				if ($this->connection === false) break;
 
 				$buf = fgets($this->connection);
 				if (strlen($buf) === 0) continue;

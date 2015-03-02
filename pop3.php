@@ -5,6 +5,8 @@
 include('server.php');
 
 class POP3 extends Server {
+	protected $to_delete = [];
+
 	protected function onConnection(){
 		$this->write('+OK Hi');
 	}
@@ -21,7 +23,15 @@ class POP3 extends Server {
 		} else if ($command === 'QUIT') {
 			$this->write('+OK');
 			fclose($this->connection);
+
+			// execute DELE actions
+			foreach ($this->to_delete as $id) {
+				$this->_dele($id);
+			}
+
 			return true;
+		} else if ($command === 'NOOP') {
+			$this->write('+OK');
 		} else if ($command === 'STAT') {
 			$this->write('+OK ' . $this->_stat());
 		} else if ($command === 'LIST') {
@@ -35,7 +45,10 @@ class POP3 extends Server {
 			$this->write($this->_retr($params[0]));
 			$this->write('.');
 		} else if ($command === 'DELE') {
-			$this->_dele($params[0]);
+			$this->to_delete[] = $params[0];
+			$this->write('+OK');
+		} else if ($command === 'RSET') {
+			$this->to_delete = [];
 			$this->write('+OK');
 		} else if ($command === 'DATA') {
 			$this->write('+OK');
@@ -78,7 +91,9 @@ class POP3 extends Server {
 
 	protected function _dele($id) {
 		$files = glob('mails/*');
-		unlink($files[$id]);
+		if (isset($files[$id])) {
+			unlink($files[$id]);
+		}
 	}
 
 }
