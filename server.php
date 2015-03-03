@@ -36,11 +36,6 @@ class Server {
 		fclose($socket);
 	}
 
-	protected function write($message) {
-		echo "> {$message}\n";
-		fwrite($this->connection, "{$message}\r\n");
-	}
-
 	protected function onConnection() {}
 	protected function loop() {}
 }
