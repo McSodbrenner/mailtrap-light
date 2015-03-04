@@ -2,8 +2,6 @@
 
 // SMTP Server
 // http://www.elektronik-kompendium.de/sites/net/0903081.htm
-include('server.php');
-
 class SMTP extends Server {
 	protected $transports;
 
@@ -42,11 +40,6 @@ class SMTP extends Server {
 			$this->write('250 Ok');
 		}
 	}
-
-	protected function write($message) {
-		echo "> {$message}\n";
-		fwrite($this->connection, "{$message}\r\n");
-	}
 }
 
 // save mail into file
@@ -66,37 +59,21 @@ class SMTP_toGmail {
 		$this->config = $config;
 	}
 
-	public function process($data) {
+	public function process($mail_data) {
 		echo "--- ON INIT GMAIL---\n";
 		$this->socket = stream_socket_client($this->config['host'], $errno, $errstr);
+		if (!$this->socket) die ("$errstr ($errno)");
 
 		$this->read();
-
-		$this->write('EHLO gmail');
-		$this->read();
-
-		$this->write('AUTH LOGIN');
-		$this->read();
-
-		$this->write(base64_encode($this->config['user']));
-		$this->read();
-
-		$this->write(base64_encode($this->config['pass']));
-		$this->read();
-
-		$this->write("MAIL FROM: <{$this->config['user']}>");
-		$this->read();
-
-		$this->write("RCPT TO: <{$this->config['user']}>");
-		$this->read();
-
-		$this->write('DATA');
-		$this->read();
-
-		$this->write($data);
-		$this->write('.');
-		$this->read();
-
+		$this->writeRead('EHLO gmail');
+		$this->writeRead('AUTH LOGIN');
+		$this->writeRead(base64_encode($this->config['user']));
+		$this->writeRead(base64_encode($this->config['pass']));
+		$this->writeRead("MAIL FROM: <{$this->config['user']}>");
+		$this->writeRead("RCPT TO: <{$this->config['user']}>");
+		$this->writeRead('DATA');
+		$this->write($mail_data);
+		$this->writeRead('.');
 		$this->write('QUIT');
 
 		fclose($this->socket);
@@ -113,15 +90,11 @@ class SMTP_toGmail {
 
 	protected function write($message) {
 		echo '> ' . $message . "\n";
-		fwrite($this->socket, $message . "\r\n");
+		fwrite($this->socket, "{$message}\r\n");
+	}
 
+	protected function writeRead($message) {
+		$this->write($message);
+		$this->read();
 	}
 }
-
-$mail =
-$transports = [
-	//new SMTP_toFile(),
-	new SMTP_toGmail(include('../gmail.php')),
-];
-
-$smtp = new SMTP('172.20.0.206:10025', $transports);
