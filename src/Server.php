@@ -2,7 +2,6 @@
 
 class Server {
 	protected $connection;
-	protected $scoped_array;
 
 	public function __construct($bind_to) {
 		error_reporting(E_ALL);
@@ -28,7 +27,7 @@ class Server {
 				$buf = fgets($this->connection);
 				if (strlen($buf) === 0) continue;
 
-				if (DEBUG) echo "< {$buf}";
+				echo "< {$buf}";
 				if ($this->loop($buf)) break;
 			} while (true);
 		} while (true);
