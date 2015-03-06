@@ -9,9 +9,9 @@ class Server {
 		ob_implicit_flush();
 
 		echo "--- ON INIT ---\n";
-		$socket = stream_socket_server('tcp://' . $bind_to, $errno, $errstr);
-		stream_set_timeout($socket, 3);
+		$socket = @stream_socket_server('tcp://' . $bind_to, $errno, $errstr);
 		if (!$socket) die ("$errstr ($errno)");
+		stream_set_timeout($socket, 3);
 		echo 'Server "' . get_class($this) . '" initialized at ' . stream_socket_get_name($socket, false) . "\n";
 
 		do {
