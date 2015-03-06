@@ -1,0 +1,5 @@
+#!/usr/bin/php
+<?php
+
+include('src/Sendmail.php');
+new Sendmail(file_get_contents('php://stdin'));
