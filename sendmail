@@ -6,7 +6,7 @@ include('src/ForwardToSmtp.php');
 include('src/ForwardToFile.php');
 
 $forwarders = [
-	new ForwardToFile('/../mails.json'),
+	new ForwardToFile(__DIR__ . '/../mails.json'),
 	/*
 	new ForwardToSmtp([
 		'host' => 'ssl://smtp.gmail.com:465',
