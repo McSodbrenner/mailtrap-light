@@ -2,7 +2,7 @@
 
 // POP3 Server
 // http://www.elektronik-kompendium.de/sites/net/0903091.htm
-class Pop3 extends Server {
+class Pop3Server extends Server {
 	protected $to_delete = [];
 
 	protected function onConnection(){

@@ -2,7 +2,7 @@
 
 // SMTP Server
 // http://www.elektronik-kompendium.de/sites/net/0903081.htm
-class Smtp extends Server {
+class SmtpServer extends Server {
 	protected $transports;
 	protected $data = [];
 
@@ -72,8 +72,10 @@ class Smtp extends Server {
 			fclose($this->connection);
 
 			// process transports
-			foreach ($this->transports as $transport) {
-				call_user_func(array($transport, 'process'), $this->data['from'], $this->data['to'], $this->data['data']);
+			if (count($this->data) !== 0) {
+				foreach ($this->transports as $transport) {
+					call_user_func(array($transport, 'process'), $this->data['from'], $this->data['to'], $this->data['data']);
+				}
 			}
 
 			$this->data = [];

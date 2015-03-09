@@ -1,7 +1,7 @@
 <?php
 
 // forward to Gmail
-class SmtpToSmtp {
+class ForwardToSmtp {
 	protected $config;
 	protected $socket;
 

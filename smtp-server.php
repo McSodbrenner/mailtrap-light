@@ -1,7 +1,7 @@
-#!/usr/bin/env php
 <?php
 
-include('src/Sendmail.php');
+include('src/Server.php');
+include('src/SmtpServer.php');
 include('src/ForwardToSmtp.php');
 include('src/ForwardToFile.php');
 
@@ -16,7 +16,7 @@ $forwarders = [
 	*/
 
 	// I do this so you don't have my mail credentials at the github repository :P
-	//new ForwardToSmtp(include(__DIR__ . '/../gmail.php')),
+	new ForwardToSmtp(include(__DIR__ . '/../gmail.php')),
 ];
 
-new Sendmail(file_get_contents('php://stdin'), $forwarders);
+new SmtpServer('0.0.0.0:10025', $forwarders);
