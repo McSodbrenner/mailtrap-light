@@ -4,6 +4,14 @@
 // http://www.elektronik-kompendium.de/sites/net/0903091.htm
 class Pop3Server extends Server {
 	protected $to_delete = [];
+	protected $database;
+	protected $datafile;
+
+	public function __construct($bind_to, $datafile) {
+		$this->datafile = $datafile;
+		$this->database = json_decode(file_get_contents($datafile), true);
+		parent::__construct($bind_to);
+	}
 
 	protected function onConnection(){
 		$this->write('+OK Hi');
@@ -24,23 +32,28 @@ class Pop3Server extends Server {
 
 			// execute DELE actions
 			foreach ($this->to_delete as $id) {
-				$this->_dele($id);
+				unset($this->database[$id]);
 			}
+			file_put_contents($this->datafile, json_encode($this->database));
 
 			return true;
 		} else if ($command === 'NOOP') {
 			$this->write('+OK');
 		} else if ($command === 'STAT') {
-			$this->write('+OK ' . $this->_stat());
+			$size = 0;
+			foreach ($this->database as $item) {
+				$size += strlen($item['body']);
+			}
+			$this->write('+OK ' . count($this->database) . ' ' . $size);
 		} else if ($command === 'LIST') {
 			$this->write('+OK');
-			foreach ($this->_list() as $item) {
-				$this->write($item);
+			foreach ($this->database as $key=>$item) {
+				$this->write($key . ' ' . strlen($item['body']));
 			}
 			$this->write('.');
 		} else if ($command === 'RETR') {
 			$this->write('+OK');
-			$this->write($this->_retr($params[0]));
+			$this->write($this->database[$params[0]]['body']);
 			$this->write('.');
 		} else if ($command === 'DELE') {
 			$this->to_delete[] = $params[0];
@@ -61,37 +74,4 @@ class Pop3Server extends Server {
 			$this->write('-ERR');
 		}
 	}
-
-	protected function _stat() {
-		$filesize = 0;
-		$files = glob('mails/*');
-		foreach ($files as $file) {
-			$filesize += filesize($file);
-		}
-
-		return count($files) . ' ' . $filesize;
-	}
-
-	protected function _list() {
-		$items = [];
-		$files = glob('mails/*');
-		foreach ($files as $i => $file) {
-			$items[] = "{$i} " . filesize($file);
-		}
-
-		return $items;
-	}
-
-	protected function _retr($id) {
-		$files = glob('mails/*');
-		return file_get_contents($files[$id]);
-	}
-
-	protected function _dele($id) {
-		$files = glob('mails/*');
-		if (isset($files[$id])) {
-			unlink($files[$id]);
-		}
-	}
-
 }

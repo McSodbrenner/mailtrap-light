@@ -10,11 +10,14 @@ class ForwardToFile {
 			touch($this->datafile);
 		}
 	}
+
 	public function process($from, $to, $data) {
 		$database = json_decode(file_get_contents($this->datafile), true);
-		$database[uniqid()][
-			'meta' => [],
-			'body' => $data,
+		$database[] = [
+			'from'	=> $from,
+			'to'	=> $to,
+			'flags'	=> '',
+			'body'	=> $data,
 		];
 		file_put_contents($this->datafile, json_encode($database));
 	}
