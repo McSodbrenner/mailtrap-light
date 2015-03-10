@@ -1,5 +1,5 @@
 # mailtrap-light
-**A collection of tiny PHP scripts (_all together below 12kb!_) to provide a hassle-free development environment for testing emails.**
+**A collection of tiny PHP scripts (_all together below 9kb!_) to provide a hassle-free development environment for testing emails.**
 
 It consists of a sendmail replacement, an SMTP server and a POP3 server. These scripts are probably neither the fastest nor the most feature packed, but that shouldn't matter in a local environment. They should just help you to test the email delivery
 
