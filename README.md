@@ -23,15 +23,18 @@ The `mail()` command doesn't work in your local development environment? No prob
 
 
 ## The SMTP server
-You need an SMTP server because your application needs on? No problem.
+You need an SMTP server because your application needs one? No problem.
 
  1. Copy `examples/smtp-server.php` to a different path and edit it to suit your needs.
  2. Start the server with `php smtp-server.php` on your console. At the console you can watch the exchanged traffic.
  3. Set the following parameters for your SMTP client library:
-     * **Host:** `IP` or `localhost`
-	 * **Port:** `10025`
-	 * **Username:** _Not needed_
-	 * **Password:** _Not needed_
+
+|         |POP3
+|---------|:--------------------
+|Host     |`IP` or `localhost`
+|Port     | `10025`
+|Username |_Not needed_
+|Password |_Not needed_
 
 
 ## The POP3 server
@@ -42,14 +45,11 @@ You don't have an internet connection? No problem.
  3. Start the server with `php pop3-server.php` on your console. At the console you can watch the exchanged traffic.
  4. Configure your local mail client:
 
-	#### POP3
-     * **Host:** `IP` or `localhost`
-	 * **Port:** `10110`
-	 * **Username:** _Whatever you want_
-	 * **Password:** _Whatever you want_
 
-	#### SMTP
-     * **Host:** `IP` or `localhost`
-	 * **Port:** `10025`
-	 * **Username:** _Not needed_
-	 * **Password:** _Not needed_
+|         | POP3              | SMTP
+|---------|:------------------|:-------
+|Host     |`IP` or `localhost`|`IP` or `localhost`
+|Port     | `10110`           | `10025`
+|Username |_Whatever you want_|_Not needed_
+|Password |_Whatever you want_|_Not needed_
+
