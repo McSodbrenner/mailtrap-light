@@ -11,7 +11,7 @@ It works like the webservice [mailtrap.io](https://mailtrap.io/) but much more s
 
 You will first have a receiver script (sendmail replacement or SMTP server) and then a forwarder script (to save the mail as file to catch the mails via the POP3 server or to forward the mail by SMTP to your default mail account). Take a look at the examples folder to see the possibilities.
 
-** No mails will ever be delivered to your customers! You will get all mails for all receiver email addresses. Nobody else. **
+**No mails will ever be delivered to your customers! You will get all mails for all receiver email addresses. Nobody else.**
 
 
 ## The `sendmail` replacement
@@ -42,13 +42,13 @@ You don't have an internet connection? No problem.
  3. Start the server with `php pop3-server.php` on your console. At the console you can watch the exchanged traffic.
  4. Configure your local mail client:
 
-	 ** POP3 **
+	#### POP3
      * **Host:** `IP` or `localhost`
 	 * **Port:** `10110`
 	 * **Username:** _Whatever you want_
 	 * **Password:** _Whatever you want_
 
-	** SMTP **
+	#### SMTP
      * **Host:** `IP` or `localhost`
 	 * **Port:** `10025`
 	 * **Username:** _Not needed_
