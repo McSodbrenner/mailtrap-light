@@ -1,7 +1,20 @@
 # mailtrap-light
-**A collection of PHP scripts (_all together below 10kb!_) to provide a hassle-free development environment for testing emails.**
+**A collection of tiny PHP scripts (_all together below 12kb!_) to provide a hassle-free development environment for testing emails.**
 
-It consists of an SMTP server and a POP3 server. Both are probably neither the fastest nor the most secure, but this shouldn't matter in a local environment. They should just help you to test the email delivery without the risk of spamming your customers. It works a little like the webservice [mailtrap.io](https://mailtrap.io/) but much more simpler. You don't have to adapt your application controller. All emails to email addresses will just be delivered to your mail account.
+It consists of a sendmail replacement, an SMTP server and a POP3 server. These scripts are probably neither the fastest nor the most feature packed, but that shouldn't matter in a local environment. They should just help you to test the email delivery
+
+* without the risk of spamming your customers
+* without the need of adapting your application
+* without the need of an internet connection.
+
+It works like the webservice [mailtrap.io](https://mailtrap.io/) but much more simpler.
+
+You will first have a receiver script (sendmail replacement or SMTP server) and then a forwarder script (to save the mail as file to catch the mails via the POP3 server or to forward the mail by SMTP to your default mail account). Take a look at the examples folder to see the possibilities.
+
+
+## The `sendmail` replacement
+The `mail()` command doesn't work in your local development environment? No problem.
+
 
 
 ## The SMTP server
@@ -18,4 +31,4 @@ Take a look at the `$transports` array in the `smtp.php` file. There you can def
 ## The POP3 server
 Start the server with a simple `php pop3.php` on your console. This will start the POP3 server on your local machine at port `10110` (you can change this in `pop3.php`). At the console you can watch the exchanged traffic.
 In your email client set `POP3` as protocol, your IP or `localhost` as host and `10025` as port. Choose whatever you want as Username or Password. You are always allowed to login. :)
-
+All emails to email addresses will just be delivered to your mail account.
