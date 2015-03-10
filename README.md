@@ -11,24 +11,45 @@ It works like the webservice [mailtrap.io](https://mailtrap.io/) but much more s
 
 You will first have a receiver script (sendmail replacement or SMTP server) and then a forwarder script (to save the mail as file to catch the mails via the POP3 server or to forward the mail by SMTP to your default mail account). Take a look at the examples folder to see the possibilities.
 
+** No mails will ever be delivered to your customers! You will get all mails for all receiver email addresses. Nobody else. **
+
 
 ## The `sendmail` replacement
 The `mail()` command doesn't work in your local development environment? No problem.
 
+ 1. Copy `examples/sendmail` to a different path and edit it to suit your needs.
+ 2. Edit your `php.ini` and set `sendmail_path` to `YOUR_PATH/sendmail`.
+ 3. Restart your webserver.
 
 
 ## The SMTP server
-Start the server with a simple `php smtp.php` on your console. This will start the SMTP server on your local machine at port `10025` (you can change this in `smtp.php`). At the console you can watch the exchanged traffic.
-In your application's configuration file set your IP or `localhost` as host and `10025` as port. You don't need to authenticate with Username or Password.
+You need an SMTP server because your application needs on? No problem.
 
-Take a look at the `$transports` array in the `smtp.php` file. There you can define what you want to do with the mail data the server receives.
+ 1. Copy `examples/smtp-server.php` to a different path and edit it to suit your needs.
+ 2. Start the server with `php smtp-server.php` on your console. At the console you can watch the exchanged traffic.
+ 3. Set the following parameters for your SMTP client library:
+     * **Host:** `IP` or `localhost`
+	 * **Port:** `10025`
+	 * **Username:** _Not needed_
+	 * **Password:** _Not needed_
 
-* If you want to use the **POP3 Server** comment in the transport `SmtpToFile`. This will save the mail data on the file system. The POP3 server will deliver the mails from there. This transport is useful because you are able to test email delivery without internet access, because the emails do not leave your development machine.
-
-
-* If you want to **forward the mails to a different SMTP server** comment in the transport `SmtpToSMTP`. This is useful if you just want to send emails from your development machine without the risk of committing your credentials to a versioning system like GIT or SVN.
 
 ## The POP3 server
-Start the server with a simple `php pop3.php` on your console. This will start the POP3 server on your local machine at port `10110` (you can change this in `pop3.php`). At the console you can watch the exchanged traffic.
-In your email client set `POP3` as protocol, your IP or `localhost` as host and `10025` as port. Choose whatever you want as Username or Password. You are always allowed to login. :)
-All emails to email addresses will just be delivered to your mail account.
+You don't have an internet connection? No problem.
+
+ 1. Set up the SMTP server with the forwarder class `ForwardToFile`.
+ 2. Copy `examples/pop3-server.php` to a different path and edit it to suit your needs.
+ 3. Start the server with `php pop3-server.php` on your console. At the console you can watch the exchanged traffic.
+ 4. Configure your local mail client:
+
+	 ** POP3 **
+     * **Host:** `IP` or `localhost`
+	 * **Port:** `10110`
+	 * **Username:** _Whatever you want_
+	 * **Password:** _Whatever you want_
+
+	** SMTP **
+     * **Host:** `IP` or `localhost`
+	 * **Port:** `10025`
+	 * **Username:** _Not needed_
+	 * **Password:** _Not needed_
