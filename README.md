@@ -29,7 +29,7 @@ You need an SMTP server because your application needs one? No problem.
  2. Start the server with `php smtp-server.php` on your console. At the console you can watch the exchanged traffic.
  3. Set the following parameters for your SMTP client library:
 
-|         |POP3
+|         |SMTP
 |---------|:--------------------
 |Host     |`IP` or `localhost`
 |Port     | `10025`
