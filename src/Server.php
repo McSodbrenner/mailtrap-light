@@ -36,11 +36,15 @@ class Server {
 	}
 
 	protected function write($message) {
-		echo "> {$message}\n";
-		fwrite($this->connection, "{$message}\r\n");
+		try {
+			fwrite($this->connection, "{$message}\r\n");
+			echo "> {$message}\n";
+		} catch (\Exception $e) {
+			echo ">| COULD NOT WRITE {$message}\n";
+		}
 	}
 
 	protected function onConnection() {}
-	protected function loop() {}
+	protected function loop($data) {}
 }
 

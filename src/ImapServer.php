@@ -52,16 +52,19 @@ class ImapServer extends Server {
 		} else if ($command === 'UID') {
 			// parse fetch command
 			if (preg_match('~^(?P<command>fetch)\s+(?P<min>\d+):?(?P<max>\d+|\*)?\s+\((?P<arguments>.*)\)~i', $params, $match)) {
-				$match['max'] = $match['max'] === '*' ? count($this->database) : $match['max'];
+				$match['max'] = ($match['max'] === '*') ? count($this->database) : $match['max'];
+				$match['max'] = ($match['max'] === '') ? $match['min'] : $match['max'];
 
 				// iterate all requested messages
-				for ($i=$match['min']-1; $i<$match['max']; $i++) {
-					$mail = $this->database[$i];
+				for ($i=$match['min']; $i<=$match['max']; $i++) {
+					$mail = $this->database[$i-1];
 
 					$temp = [];
 					$arguments = explode(' ', $match['arguments']);
 					$arguments[] = 'UID';
 					foreach ($arguments as $arg) {
+						//$arg = strtoupper($arg);
+
 						if ($arg === 'FLAGS') {
 							$temp[] = "{$arg} ({$mail['flags']})";
 						} else if ($arg === 'UID') {
@@ -71,6 +74,8 @@ class ImapServer extends Server {
 						} else if ($arg === 'RFC822.HEADER') {
 							preg_match('|.+?\n\n|s', $mail['body'], $match2);
 							$temp[] = "{$arg} {".strlen($match2[0])."}\r\n" . $match2[0];
+						} else if ($arg === 'RFC822.peek') {
+							$temp[] = "{$arg} {".strlen($mail['body'])."}\r\n" . $mail['body'];
 						}
 					}
 
